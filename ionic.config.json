@@ -1,0 +1,7 @@
+{
+  "name": "saorpgsystem",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

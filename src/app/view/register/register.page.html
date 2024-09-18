@@ -1,0 +1,33 @@
+<ion-content [fullscreen]="true">
+  <form [formGroup]="registerForm" (ngSubmit)="showConfirmAccountRegister()" novalidate class="registerForm">
+    <img src="../../../assets/images/logo.png">
+    <ion-item>
+      <ion-input formControlName="userName" type="text" placeholder="Nome do personagem"></ion-input>
+    </ion-item>
+    <span *ngIf="registerForm.get('userName')?.touched && registerForm.get('userName')?.errors?.['required']">Nome do personagem é obrigatório</span>
+    <span *ngIf="registerForm.get('userName')?.dirty && registerForm.get('userName')?.errors?.['minlength']">O nome do personagem deve ter no mínimo 4 caracteres</span>
+    <span *ngIf="registerForm.get('userName')?.dirty && registerForm.get('userName')?.errors?.['maxlength']">O nome do personagem deve ter no máximo 50 caracteres</span>
+    <ion-item>
+      <ion-input formControlName="email" type="text" placeholder="E-mail"></ion-input>
+    </ion-item>
+    <span *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']">E-mail é obrigatório</span>
+    <span *ngIf="registerForm.get('email')?.dirty && registerForm.get('email')?.errors?.['email']">Formato de Email Inválido</span>
+    <ion-item>
+      <ion-input formControlName="password" type="password" placeholder="Senha"></ion-input>
+    </ion-item>
+    <span *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']">Senha é obrigatória</span>
+    <span *ngIf="registerForm.get('password')?.dirty && registerForm.get('password')?.errors?.['minlength']">A senha é de no mínimo 6 caracteres</span>
+    <ion-item>
+      <ion-input formControlName="confirmPassword" type="password" placeholder="Confirmar senha"></ion-input>
+    </ion-item>
+    <span *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['required']">A comfirmação de Senha é obrigatória</span>
+    <span *ngIf="registerForm.get('confirmPassword')?.dirty && registerForm.get('password')?.value != registerForm.get('confirmPassword')?.value">As senhas não coincidem</span>
+    <ion-item>
+      <input type="file" #fileInput class="fileInput" (change)="uploadFile($event.target); changeFileInputLabelOnFileSelect(fileInput.value)" formControlName="profileImage">
+      <label (click)="fileInput.click()" class="fileInputLabel">{{fileSelectLabelText}}</label>
+    </ion-item>
+    <span *ngIf="registerForm.get('profileImage')?.errors?.['required']">A imagem de perfil é obrigatória</span>
+    <ion-button type="submit" shape="round">Registrar</ion-button>
+    <p (click)="goToLoginPage()">Já tem uma conta? Faça login aqui</p>
+  </form>
+</ion-content>
