@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OthersService {
 
-  constructor() { }
+  constructor(private alertService: AlertService) { }
 
   changeFileInputStateOnFileSelect(value: string): boolean {
     if(value){
@@ -20,6 +21,16 @@ export class OthersService {
       return textSelected;
     } else {
       return textNotSelected;
+    }
+  }
+
+  checkIfFileTypeIsCorrect(image: any): boolean {
+    const file = image.item(0);
+    if (file.type.split('/')[0] !== 'image') {
+      this.alertService.presentAlert('Erro ao enviar foto de perfil', 'Tipo não suportado');
+      return false;
+    } else {
+      return true;
     }
   }
 }
