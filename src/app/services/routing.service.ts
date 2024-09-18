@@ -11,4 +11,12 @@ export class RoutingService {
   goToRegisterPage() {
     this.router.navigate(['/register']);
   }
+
+  goToLoginPage() {
+    this.router.navigate(['/login']);
+  }
+
+  goToHomePage() {
+    this.router.navigate(['/home']);
+  }
 }

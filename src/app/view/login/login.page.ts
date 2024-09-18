@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
@@ -11,13 +12,20 @@ export class LoginPage implements OnInit {
 
   loginForm! : FormGroup;
 
-  constructor(private builder: FormBuilder, private routingService: RoutingService) { }
+  constructor(
+    private builder: FormBuilder, 
+    private routingService: RoutingService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.startForm();
   }
 
-  submitForm(){}
+  login(){
+    if(this.loginForm.valid) {
+      this.authService.login(this.loginForm.value['email'], this.loginForm.value['password']);
+    }
+  }
 
   startForm(): void {
     this.loginForm = this.builder.group({

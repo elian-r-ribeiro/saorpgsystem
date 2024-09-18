@@ -55,7 +55,7 @@ export class RegisterPage implements OnInit {
   
   registerAccount() {
     if (this.registerForm.valid) {
-      this.authService.registerUser(this.registerForm.value['userName'], this.registerForm.value['email'], this.registerForm.value['password'], this.image)
+      this.authService.registerAccount(this.registerForm.value['userName'], this.registerForm.value['email'], this.registerForm.value['password'], this.image)
     }
   }
 }
