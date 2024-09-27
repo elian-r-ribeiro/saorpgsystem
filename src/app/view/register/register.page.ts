@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
-import { OthersService } from 'src/app/services/others.service';
+import { OthersService } from 'src/app/model/common/others.service';
+import { AuthService } from 'src/app/model/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +14,7 @@ export class RegisterPage implements OnInit {
   fileSelectLabelText = "Selecionar imagem de perfil";
   isFileSelected = false;
   image: any;
+  watched = false;
 
   constructor(private builder: FormBuilder, private othersService: OthersService, private authService: AuthService) { }
 
@@ -55,7 +56,7 @@ export class RegisterPage implements OnInit {
   
   registerAccount() {
     if (this.registerForm.valid) {
-      this.authService.registerAccount(this.registerForm.value['userName'], this.registerForm.value['email'], this.registerForm.value['password'], this.image)
+      this.authService.registerAccount(this.registerForm.value['userName'], this.registerForm.value['email'], this.registerForm.value['password'], this.image, this.watched);
     }
   }
 }
