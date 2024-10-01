@@ -12,6 +12,15 @@
     height: 120%;
     object-fit: scale-down;
     transform: scale(1.1);
+  }
 
+  .pause-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem; 
+    color: white; 
+    pointer-events: none; 
   }
 }

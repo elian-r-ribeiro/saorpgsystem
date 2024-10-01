@@ -1,7 +1,12 @@
-<ion-content>
+<ion-content (click)="onUserInteraction()">
   <div class="video-container" *ngIf="showVideo; else noVideo">
-    <video #videoPlayer width="100%" height="auto" autoplay (ended)="onVideoEnded()">
-      <source src="assets/videos/SAO Opening.mp4" type="video/mp4"></video>
+    <video #videoPlayer width="100%" height="auto" (ended)="onVideoEnded()">
+      <source src="assets/videos/SAO Opening.mp4" type="video/mp4">
+    </video>
+    
+    <div *ngIf="!isPlaying" class="pause-icon">
+      <ion-icon name="play-circle"></ion-icon>
+    </div>
   </div>
 
   <ng-template #noVideo>
