@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { map, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/model/services/auth.service';
 import { FirebaseService } from 'src/app/model/services/firebase.service';
 
@@ -8,7 +8,7 @@ import { FirebaseService } from 'src/app/model/services/firebase.service';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit, AfterViewInit {
+export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('videoPlayer', { static: false }) videoPlayer!: ElementRef<HTMLVideoElement>;
   showVideo: boolean = false;
@@ -18,6 +18,7 @@ export class HomePage implements OnInit, AfterViewInit {
   maxHP: number = 500;
   currentHP: number = 500;
   HpBarColor = 'success';
+  allSubscriptions?: Subscription[]
 
   constructor(
     private firebaseService: FirebaseService,
@@ -27,7 +28,11 @@ export class HomePage implements OnInit, AfterViewInit {
   ngOnInit() {
     this.checkWatchedStatus();
     this.setLoggedUserInfo();
-    this.setHpColor()
+    this.setHpColor();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeFromEverything();
   }
 
   calculateHpPercentage(): number {
@@ -109,15 +114,26 @@ export class HomePage implements OnInit, AfterViewInit {
     }
   }
 
+  handlePlayerLevelAndXp() {
+    if(this.loggedUserInfoFromFirebase[0].playerCurrentXp >= this.loggedUserInfoFromFirebase[0].requiredXpToNextLevel){
+      this.firebaseService.updatePlayerLevel(this.loggedUserInfoFromFirebase[0].playerCurrentLevel + 1, this.loggedUserInfoFromFirebase[0].id);
+    }
+  }
+
   async setLoggedUserInfo() {
     const loggedUserUid = this.loggedUserInfoFromLocalStorage.uid;
-    this.firebaseService.getSomethingFromFirebaseWithCondition('uid', loggedUserUid, 'users').subscribe(res => {
+    const userSubscription = this.firebaseService.getSomethingFromFirebaseWithCondition('uid', loggedUserUid, 'users').subscribe(res => {
       this.loggedUserInfoFromFirebase = res.map(user => {return{id : user.payload.doc.id, ...user.payload.doc.data() as any} as any});
       this.maxHP = this.loggedUserInfoFromFirebase[0].playerMaxHp;
       this.currentHP = this.loggedUserInfoFromFirebase[0].playerCurrentHp;
       this.setHpColor();
     });
+    this.allSubscriptions?.push(userSubscription);
   }
 
   goToProfilePage(){}
+
+  unsubscribeFromEverything(){
+    this.allSubscriptions?.forEach(subscription => subscription.unsubscribe());
+  }
 }

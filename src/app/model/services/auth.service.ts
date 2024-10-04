@@ -30,7 +30,9 @@ export class AuthService {
       const userData = await this.auth.createUserWithEmailAndPassword(email, password).then(async (userData) => {
         const uid = userData.user?.uid;
         const imageURL = await this.firebaseService.getImageDownloadURL(image, 'profilePictures', uid);
-        await this.firestore.collection('users').add({ userName, email, imageURL, uid, watched, playerMaxHp: 500, playerCurrentHp: 500 });
+        await this.firestore.collection('users').add({ 
+          userName, email, imageURL, uid, watched, playerMaxHp: 500, playerCurrentHp: 500,
+          playerCurrentLevel: 1, playerCurrentXp: 0, requiredXpToNextLevel: 100 });
         await userData.user?.sendEmailVerification();
         loading.dismiss();
         this.alertService.presentAlert('Sucesso', 'Um e-mail de confirmação foi enviado para você, verifique antes de fazer login');
