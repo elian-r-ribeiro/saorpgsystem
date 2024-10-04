@@ -1,8 +1,9 @@
 import { Inject, Injectable, Injector } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,12 @@ import { AuthService } from './auth.service';
 export class FirebaseService {
   user: any;
 
-  constructor(private storage: AngularFireStorage, private firestore: AngularFirestore, private auth: AngularFireAuth, @Inject(Injector) private readonly injector: Injector) { }
+  constructor(
+    private storage: AngularFireStorage, 
+    private firestore: AngularFirestore, 
+    private auth: AngularFireAuth, 
+    @Inject(Injector) private readonly injector: Injector,
+    ) { }
 
   private injectAuthService(){
     return this.injector.get(AuthService);
@@ -30,6 +36,14 @@ export class FirebaseService {
     const path = `${PATH}/${fileName}`;
     let task = this.storage.upload(path, file);
     return task;
+  }
+
+  getSomethingFromFirebase(path: string) {
+    return this.firestore.collection(path).snapshotChanges();
+  }
+
+  getSomethingFromFirebaseWithCondition(condition: string, equalsTo: string, path: string): Observable<DocumentChangeAction<unknown>[]> {
+    return this.firestore.collection(path, ref => ref.where(condition, '==', equalsTo)).snapshotChanges();
   }
 
   async getWatchedStatus(): Promise<boolean> {
