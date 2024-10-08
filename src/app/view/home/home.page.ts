@@ -116,7 +116,11 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   handlePlayerLevelAndXp() {
     if(this.loggedUserInfoFromFirebase[0].playerCurrentXp >= this.loggedUserInfoFromFirebase[0].requiredXpToNextLevel){
-      this.firebaseService.updatePlayerLevel(this.loggedUserInfoFromFirebase[0].playerCurrentLevel + 1, this.loggedUserInfoFromFirebase[0].id);
+      this.firebaseService.updatePlayerLevelAndHp(
+        this.loggedUserInfoFromFirebase[0].playerCurrentLevel + 1, 
+        this.loggedUserInfoFromFirebase[0].playerMaxHp + 40,
+        this.loggedUserInfoFromFirebase[0].id
+        );
     }
   }
 

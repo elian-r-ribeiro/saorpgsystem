@@ -38,8 +38,9 @@ export class FirebaseService {
     return task;
   }
 
-  updatePlayerLevel(newLevel: number, userDocumentId: string) {
-    return this.firestore.collection('users').doc(userDocumentId).update({ playerCurrentLevel: newLevel, playerCurrentXp: 0});
+  updatePlayerLevelAndHp(newLevel: number, newHp: number, userDocumentId: string) {
+    return this.firestore.collection('users').doc(userDocumentId).update({ 
+      playerCurrentLevel: newLevel, playerCurrentXp: 0, playerMaxHp: newHp });
   }
 
   getSomethingFromFirebase(path: string) {

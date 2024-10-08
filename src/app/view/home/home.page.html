@@ -11,9 +11,12 @@
   <ng-template #noVideo>
     <img src="../../../assets/HealthBar.png" class="healthBarFrame">
     <div *ngFor="let user of loggedUserInfoFromFirebase" class="profile">
+      <ion-progress-bar [value]="currentHP / maxHP" color="{{HpBarColor}}">
+      </ion-progress-bar>
       <ion-label (click)="handlePlayerLevelAndXp()" class="profileName">{{user.userName}}</ion-label>
+      <ion-label (click)="handlePlayerLevelAndXp()" class="playerHpText">{{user.playerCurrentHp}}/{{user.playerMaxHp}}</ion-label>
+      <ion-label (click)="handlePlayerLevelAndXp()" class="playerLevelText">LV:{{user.playerCurrentLevel}}</ion-label>
     </div>
-    <ion-progress-bar [value]="currentHP / maxHP" color="{{HpBarColor}}">
-    </ion-progress-bar>
+    
   </ng-template>
 </ion-content>
