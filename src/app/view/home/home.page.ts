@@ -15,10 +15,23 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   isPlaying: boolean = false;
   loggedUserInfoFromLocalStorage = this.authService.getUserLogged();
   loggedUserInfoFromFirebase : any;
-  maxHP: number = 500;
-  currentHP: number = 500;
+  maxHP!: number;
+  currentHP!: number;
   HpBarColor = 'success';
-  allSubscriptions?: Subscription[]
+  allSubscriptions?: Subscription[];
+  isPersonIconSelected: boolean = false;
+  isPeopleIconSelected: boolean = false;
+  isMessageIconSelected: boolean = false;
+  isLocationIconSelected: boolean = false;
+  isConfigIconSelected: boolean = false;
+  isAnyIconSelected: boolean = false;
+  indicatorTop: string = '23vh';
+  menuItemsTop: string = '28vh';
+  personIcon: string = 'Man.png';
+  peopleIcon: string = 'Men.png';
+  messageIcon: string = 'Message.png';
+  locationIcon: string = 'Location.png';
+  configIcon: string = 'Config.png';
 
   constructor(
     private firebaseService: FirebaseService,
@@ -137,6 +150,86 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   goToProfilePage(){}
 
+  handleIconsActivation(icon: String) {
+    if(icon === 'person') {
+      this.isPersonIconSelected = !this.isPersonIconSelected;
+      this.isPeopleIconSelected = false;
+      this.isMessageIconSelected = false;
+      this.isLocationIconSelected = false;
+      this.isConfigIconSelected = false;
+      this.indicatorTop = '23vh';
+      this.menuItemsTop = '28vh';
+      this.handleIconChange();
+    } else if (icon === 'people') {
+      this.isPersonIconSelected = false;
+      this.isPeopleIconSelected = !this.isPeopleIconSelected;
+      this.isMessageIconSelected = false;
+      this.isLocationIconSelected = false;
+      this.isConfigIconSelected = false;
+      this.indicatorTop = '31vh';
+      this.menuItemsTop = '36vh';
+      this.handleIconChange();
+    } else if (icon === 'message') {
+      this.isPersonIconSelected = false;
+      this.isPeopleIconSelected = false;
+      this.isMessageIconSelected = !this.isMessageIconSelected;
+      this.isLocationIconSelected = false;
+      this.isConfigIconSelected = false;
+      this.indicatorTop = '38vh';
+      this.menuItemsTop = '43vh';
+      this.handleIconChange();
+    } else if (icon === 'location') {
+      this.isPersonIconSelected = false;
+      this.isPeopleIconSelected = false;
+      this.isMessageIconSelected = false;
+      this.isLocationIconSelected = !this.isLocationIconSelected;
+      this.isConfigIconSelected = false;
+      this.indicatorTop = '45vh';
+      this.menuItemsTop = '50vh';
+      this.handleIconChange();
+    } else if (icon === 'config') {
+      this.isPersonIconSelected = false;
+      this.isPeopleIconSelected = false;
+      this.isMessageIconSelected = false;
+      this.isLocationIconSelected = false;
+      this.isConfigIconSelected = !this.isConfigIconSelected;
+      this.indicatorTop = '52vh';
+      this.menuItemsTop = '57vh';
+      this.handleIconChange();
+    }
+
+    if(this.isPersonIconSelected == true || this.isPeopleIconSelected == true || this.isMessageIconSelected == true || 
+        this.isLocationIconSelected == true || this.isConfigIconSelected == true) {
+      this.isAnyIconSelected = true;
+    } else {
+      this.isAnyIconSelected = false
+    }
+  }
+
+  handleIconChange() {
+    if(this.isPersonIconSelected == true && this.personIcon === 'Man.png') {
+      this.personIcon = 'Man_on.png';
+    } if (this.isPersonIconSelected == false && this.personIcon === 'Man_on.png') {
+      this.personIcon = 'Man.png';
+    } if(this.isPeopleIconSelected == true && this.peopleIcon === 'Men.png') {
+      this.peopleIcon = 'Men_on.png';
+    } if(this.isPeopleIconSelected == false && this.peopleIcon === 'Men_on.png') {
+      this.peopleIcon = 'Men.png';
+    } if(this.isMessageIconSelected == true && this.messageIcon === 'Message.png') {
+      this.messageIcon = 'Message_on.png';
+    } if(this.isMessageIconSelected == false && this.messageIcon === 'Message_on.png') {
+      this.messageIcon = 'Message.png';
+    } if(this.isLocationIconSelected == true && this.locationIcon === 'Location.png') {
+      this.locationIcon = 'Location_on.png';
+    } if(this.isLocationIconSelected == false && this.locationIcon === 'Location_on.png') {
+      this.locationIcon = 'Location.png';
+    } if(this.isConfigIconSelected == true && this.configIcon === 'Config.png') {
+      this.configIcon = 'Config_on.png';
+    } if(this.isConfigIconSelected == false && this.configIcon === 'Config_on.png') {
+      this.configIcon = 'Config.png';
+    }
+  }
+  
   unsubscribeFromEverything(){
     this.allSubscriptions?.forEach(subscription => subscription.unsubscribe());
   }

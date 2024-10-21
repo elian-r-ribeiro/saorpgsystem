@@ -9,7 +9,7 @@
   </div>
 
   <ng-template #noVideo>
-    <img src="../../../assets/HealthBar.png" class="healthBarFrame">
+    <img src="../../../assets/images/HealthBar.png" class="healthBarFrame">
     <div *ngFor="let user of loggedUserInfoFromFirebase" class="profile">
       <ion-progress-bar [value]="currentHP / maxHP" color="{{HpBarColor}}">
       </ion-progress-bar>
@@ -17,6 +17,28 @@
       <ion-label (click)="handlePlayerLevelAndXp()" class="playerHpText">{{user.playerCurrentHp}}/{{user.playerMaxHp}}</ion-label>
       <ion-label (click)="handlePlayerLevelAndXp()" class="playerLevelText">LV:{{user.playerCurrentLevel}}</ion-label>
     </div>
-    
+
+    <div class="playerMenu">
+      <img (click)="handleIconsActivation('person')" class="personIcon" src="../../../assets/images/{{personIcon}}">
+      <img (click)="handleIconsActivation('people')" class="peopleIcon" src="../../../assets/images/{{peopleIcon}}">
+      <img (click)="handleIconsActivation('message')" class="messageIcon" src="../../../assets/images/{{messageIcon}}">
+      <img (click)="handleIconsActivation('location')" class="locationIcon" src="../../../assets/images/{{locationIcon}}">
+      <img (click)="handleIconsActivation('config')" class="configIcon" src="../../../assets/images/{{configIcon}}">
+      <img *ngIf="isAnyIconSelected" class="indicator" src="../../../assets/images/indicator.png" [style.top]="indicatorTop">
+      <div *ngIf="isPersonIconSelected" class="personMenu" [style.top]="menuItemsTop">
+        <img src="../../../assets/images/item.png">
+        <img class="itemsIcon" src="../../../assets/images/Items.png">
+        <h4 class="itemsText">Itens</h4>
+
+        <img src="../../../assets/images/item.png">
+        <img class="skillsIcon" src="../../../assets/images/Skills.png">
+        <h4 class="skillsText">Skills</h4>
+
+        <img src="../../../assets/images/item.png">
+        <img class="equipmentIcon" src="../../../assets/images/Equipment.png">
+        <h5 class="equipmentText">Equipamento</h5>
+      </div>
+    </div>
+
   </ng-template>
 </ion-content>

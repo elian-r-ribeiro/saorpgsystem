@@ -70,3 +70,78 @@ ion-progress-bar {
   width: 370px;
   
 }
+
+.playerMenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;  
+  position: relative;
+
+  .personIcon, .peopleIcon, .messageIcon, .locationIcon, .configIcon, .personIconActivated, 
+  .peopleIconActivated, .messageIconActivated, .locationIconActivated, .configIconActivated{
+    height: 60px;
+    width: 60px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+
+  .indicator {
+    position: absolute;
+    left: 53%;
+    height: 240px;
+  }
+
+  .personMenu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 54%;
+
+    .itemsIcon {
+      height: 34px;
+      width: 34px;
+      margin-left: 24px;
+      margin-top: 5px;
+      position: absolute;
+    }
+
+    .itemsText {
+      color: rgb(82, 82, 82);
+      position: absolute;
+      margin-left: 64px;
+      margin-top: 10px;
+    }
+
+    .skillsIcon {
+      height: 34px;
+      width: 34px;
+      position: absolute;
+      margin-top: 52px;
+      margin-left: 25px;
+    }
+
+    .skillsText {
+      color: rgb(82, 82, 82);
+      position: absolute;
+      margin-left: 64px;
+      margin-top: 57px;
+    }
+
+    .equipmentIcon {
+      height: 34px;
+      width: 34px;
+      position: absolute;
+      margin-top: 97px;
+      margin-left: 25px;
+    }
+
+    .equipmentText {
+      color: rgb(82, 82, 82);
+      position: absolute;
+      margin-left: 64px;
+      margin-top: 105px;
+    }
+  }
+}
