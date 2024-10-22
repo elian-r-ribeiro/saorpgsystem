@@ -11,21 +11,26 @@ import { FirebaseService } from 'src/app/model/services/firebase.service';
 export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('videoPlayer', { static: false }) videoPlayer!: ElementRef<HTMLVideoElement>;
-  showVideo: boolean = false;
-  isPlaying: boolean = false;
   loggedUserInfoFromLocalStorage = this.authService.getUserLogged();
   loggedUserInfoFromFirebase : any;
   maxHP!: number;
   currentHP!: number;
-  HpBarColor = 'success';
   allSubscriptions?: Subscription[];
+  showVideo: boolean = false;
+  isPlaying: boolean = false;
   isPersonIconSelected: boolean = false;
   isPeopleIconSelected: boolean = false;
   isMessageIconSelected: boolean = false;
   isLocationIconSelected: boolean = false;
   isConfigIconSelected: boolean = false;
   isAnyIconSelected: boolean = false;
+  isAnyPersonIconMenuOpen: boolean = false;
+  isItemsMenuOpen : boolean = false;
+  isSkillsMenuOpen: boolean = false;
+  isEquipmentMenuOpen: boolean = false;
+  HpBarColor: string = 'success';
   indicatorTop: string = '23vh';
+  indicatorLeft: string = '990px';
   menuItemsTop: string = '28vh';
   personIcon: string = 'Man.png';
   peopleIcon: string = 'Men.png';
@@ -157,16 +162,18 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       this.isMessageIconSelected = false;
       this.isLocationIconSelected = false;
       this.isConfigIconSelected = false;
-      this.indicatorTop = '23vh';
+      this.indicatorTop = '27vh';
       this.menuItemsTop = '28vh';
       this.handleIconChange();
+      this.closeAllMenusOnIconClose('person', this.isPeopleIconSelected);
+      this.handleIndicatorLeft();
     } else if (icon === 'people') {
       this.isPersonIconSelected = false;
       this.isPeopleIconSelected = !this.isPeopleIconSelected;
       this.isMessageIconSelected = false;
       this.isLocationIconSelected = false;
       this.isConfigIconSelected = false;
-      this.indicatorTop = '31vh';
+      this.indicatorTop = '35vh';
       this.menuItemsTop = '36vh';
       this.handleIconChange();
     } else if (icon === 'message') {
@@ -175,7 +182,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       this.isMessageIconSelected = !this.isMessageIconSelected;
       this.isLocationIconSelected = false;
       this.isConfigIconSelected = false;
-      this.indicatorTop = '38vh';
+      this.indicatorTop = '42vh';
       this.menuItemsTop = '43vh';
       this.handleIconChange();
     } else if (icon === 'location') {
@@ -184,7 +191,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       this.isMessageIconSelected = false;
       this.isLocationIconSelected = !this.isLocationIconSelected;
       this.isConfigIconSelected = false;
-      this.indicatorTop = '45vh';
+      this.indicatorTop = '49vh';
       this.menuItemsTop = '50vh';
       this.handleIconChange();
     } else if (icon === 'config') {
@@ -193,7 +200,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       this.isMessageIconSelected = false;
       this.isLocationIconSelected = false;
       this.isConfigIconSelected = !this.isConfigIconSelected;
-      this.indicatorTop = '52vh';
+      this.indicatorTop = '56vh';
       this.menuItemsTop = '57vh';
       this.handleIconChange();
     }
@@ -203,6 +210,51 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       this.isAnyIconSelected = true;
     } else {
       this.isAnyIconSelected = false
+    }
+  }
+
+  closeAllMenusOnIconClose(icon: string, isIconOpening: boolean) {
+    if(!isIconOpening){
+      this.isAnyPersonIconMenuOpen = false;
+      if(icon === 'person') {
+        this.isItemsMenuOpen = false;
+        this.isSkillsMenuOpen = false;
+        this.isEquipmentMenuOpen = false;
+      }
+    }
+  }
+
+  handleMenuOpening(menu: String) {
+    if(this.isPersonIconSelected) {
+      if(menu === 'items') {
+        this.isItemsMenuOpen = !this.isItemsMenuOpen;
+        this.isSkillsMenuOpen = false;
+        this.isEquipmentMenuOpen = false;
+      } else if (menu === 'skills') {
+        this.isSkillsMenuOpen = !this.isSkillsMenuOpen;
+        this.isItemsMenuOpen = false;
+        this.isEquipmentMenuOpen = false;
+      } else if (menu === 'equipment') {
+        this.isEquipmentMenuOpen = !this.isEquipmentMenuOpen;
+        this.isItemsMenuOpen = false;
+        this.isSkillsMenuOpen = false;
+      }
+    }
+
+    if(this.isItemsMenuOpen || this.isSkillsMenuOpen || this.isEquipmentMenuOpen) {
+      this.isAnyPersonIconMenuOpen = true;
+    } else {
+      this.isAnyPersonIconMenuOpen = false
+    }
+
+    this.handleIndicatorLeft();
+  }
+
+  handleIndicatorLeft() {
+    if(this.isAnyPersonIconMenuOpen) {
+      this.indicatorLeft = '1220px';
+    } else {
+      this.indicatorLeft = '990px';
     }
   }
 

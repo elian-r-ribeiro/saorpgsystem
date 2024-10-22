@@ -89,8 +89,7 @@ ion-progress-bar {
 
   .indicator {
     position: absolute;
-    left: 53%;
-    height: 240px;
+    height: 160px;
   }
 
   .personMenu {
@@ -99,7 +98,8 @@ ion-progress-bar {
     position: absolute;
     left: 54%;
 
-    .itemsIcon {
+    .itemsIcon, .itemsIconWithSkillsMenuActivated {
+      cursor: pointer;
       height: 34px;
       width: 34px;
       margin-left: 24px;
@@ -107,14 +107,16 @@ ion-progress-bar {
       position: absolute;
     }
 
-    .itemsText {
+    .itemsText, .itemsTextWithSkillsMenuActivated {
+      cursor: pointer;
       color: rgb(82, 82, 82);
       position: absolute;
       margin-left: 64px;
       margin-top: 10px;
     }
 
-    .skillsIcon {
+    .skillsIcon, .skillsIconWithSkillsMenuActivated {
+      cursor: pointer;
       height: 34px;
       width: 34px;
       position: absolute;
@@ -122,14 +124,16 @@ ion-progress-bar {
       margin-left: 25px;
     }
 
-    .skillsText {
+    .skillsText, .skillsTextWithSkillsMenuActivated {
+      cursor: pointer;
       color: rgb(82, 82, 82);
       position: absolute;
       margin-left: 64px;
       margin-top: 57px;
     }
 
-    .equipmentIcon {
+    .equipmentIcon, .equipmentIconWithSkillsMenuActivated {
+      cursor: pointer;
       height: 34px;
       width: 34px;
       position: absolute;
@@ -137,11 +141,120 @@ ion-progress-bar {
       margin-left: 25px;
     }
 
-    .equipmentText {
+    .equipmentText, .equipmentTextWithSkillsMenuActivated {
+      cursor: pointer;
       color: rgb(82, 82, 82);
       position: absolute;
       margin-left: 64px;
       margin-top: 105px;
     }
+
+    .itemsIconWithItemsMenuActivated {
+      cursor: pointer;
+      height: 34px;
+      width: 34px;
+      position: absolute;
+      margin-top: 52px;
+      margin-left: 25px;
+    }
+
+    .itemsTextWithItemsMenuActivated {
+      cursor: pointer;
+      color: rgb(82, 82, 82);
+      position: absolute;
+      margin-left: 64px;
+      margin-top: 57px;
+    }
+
+    .skillsIconWithItemsMenuActivated {
+      cursor: pointer;
+      height: 34px;
+      width: 34px;
+      position: absolute;
+      margin-top: 97px;
+      margin-left: 25px;
+    }
+
+    .skillsTextWithItemsMenuActivated {
+      cursor: pointer;
+      color: rgb(82, 82, 82);
+      position: absolute;
+      margin-left: 64px;
+      margin-top: 105px;
+    }
+
+    .equipmentIconWithItemsMenuActivated {
+      cursor: pointer;
+      cursor: pointer;
+      height: 34px;
+      width: 34px;
+      margin-left: 24px;
+      margin-top: 5px;
+      position: absolute;
+    }
+
+    .equipmentTextWithItemsMenuActivated {
+      cursor: pointer;
+      cursor: pointer;
+      color: rgb(82, 82, 82);
+      position: absolute;
+      margin-left: 64px;
+      margin-top: 10px;
+    }
+
+    .itemsIconWithEquipmentMenuActivated {
+      cursor: pointer;
+      height: 34px;
+      width: 34px;
+      position: absolute;
+      margin-top: 97px;
+      margin-left: 25px;
+    }
+
+    .itemsTextWithEquipmentMenuActivated {
+      cursor: pointer;
+      color: rgb(82, 82, 82);
+      position: absolute;
+      margin-left: 64px;
+      margin-top: 105px;
+    }
+
+    .skillsIconWithEquipmentMenuActivated {
+      cursor: pointer;
+      height: 34px;
+      width: 34px;
+      margin-left: 24px;
+      margin-top: 5px;
+      position: absolute;
+    }
+
+    .skillsTextWithEquipmentMenuActivated {
+      cursor: pointer;
+      color: rgb(82, 82, 82);
+      position: absolute;
+      margin-left: 64px;
+      margin-top: 10px;
+    }
+
+    .equipmentIconWithEquipmentMenuActivated {
+      cursor: pointer;
+      height: 34px;
+      width: 34px;
+      position: absolute;
+      margin-top: 52px;
+      margin-left: 25px;
+    }
+
+    .equipmentTextWithEquipmentMenuActivated {
+      cursor: pointer;
+      color: rgb(82, 82, 82);
+      position: absolute;
+      margin-left: 64px;
+      margin-top: 57px;
+    }
+  }
+
+  .itemBackground{
+    cursor: pointer;
   }
 }

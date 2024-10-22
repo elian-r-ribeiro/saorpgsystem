@@ -24,19 +24,60 @@
       <img (click)="handleIconsActivation('message')" class="messageIcon" src="../../../assets/images/{{messageIcon}}">
       <img (click)="handleIconsActivation('location')" class="locationIcon" src="../../../assets/images/{{locationIcon}}">
       <img (click)="handleIconsActivation('config')" class="configIcon" src="../../../assets/images/{{configIcon}}">
-      <img *ngIf="isAnyIconSelected" class="indicator" src="../../../assets/images/indicator.png" [style.top]="indicatorTop">
+      <img *ngIf="isAnyIconSelected" class="indicator" src="../../../assets/images/indicator.png" [style.top]="indicatorTop" [style.left]="indicatorLeft">
+
       <div *ngIf="isPersonIconSelected" class="personMenu" [style.top]="menuItemsTop">
-        <img src="../../../assets/images/item.png">
-        <img class="itemsIcon" src="../../../assets/images/Items.png">
-        <h4 class="itemsText">Itens</h4>
+        <!--All menus inactive-->
+        <img *ngIf="!isAnyPersonIconMenuOpen" (click)="handleMenuOpening('items')" class="itemBackground" src="../../../assets/images/item.png">
+        <img *ngIf="!isAnyPersonIconMenuOpen" (click)="handleMenuOpening('items')" class="itemsIcon" src="../../../assets/images/Items.png">
+        <h4 *ngIf="!isAnyPersonIconMenuOpen" (click)="handleMenuOpening('items')" class="itemsText">Itens</h4>
 
-        <img src="../../../assets/images/item.png">
-        <img class="skillsIcon" src="../../../assets/images/Skills.png">
-        <h4 class="skillsText">Skills</h4>
+        <img *ngIf="!isAnyPersonIconMenuOpen" (click)="handleMenuOpening('skills')" class="itemBackground" src="../../../assets/images/item.png">
+        <img *ngIf="!isAnyPersonIconMenuOpen" (click)="handleMenuOpening('skills')" class="skillsIcon" src="../../../assets/images/Skills.png">
+        <h4 *ngIf="!isAnyPersonIconMenuOpen" (click)="handleMenuOpening('skills')" class="skillsText">Skills</h4>
 
-        <img src="../../../assets/images/item.png">
-        <img class="equipmentIcon" src="../../../assets/images/Equipment.png">
-        <h5 class="equipmentText">Equipamento</h5>
+        <img *ngIf="!isAnyPersonIconMenuOpen" (click)="handleMenuOpening('equipment')" class="itemBackground" src="../../../assets/images/item.png">
+        <img *ngIf="!isAnyPersonIconMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentIcon" src="../../../assets/images/Equipment.png">
+        <h5 *ngIf="!isAnyPersonIconMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentText">Equipamento</h5>
+
+        <!--Items menu active-->
+        <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('equipment')" class="itemBackground" src="../../../assets/images/item.png">
+        <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentIconWithItemsMenuActivated" src="../../../assets/images/Equipment.png">
+        <h5 *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentTextWithItemsMenuActivated">Equipamento</h5>
+
+        <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('items')" class="itemBackground" src="../../../assets/images/item-selected.png">
+        <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('items')" class="itemsIconWithItemsMenuActivated" src="../../../assets/images/Items_on.png">
+        <h4 *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('items')" class="itemsTextWithItemsMenuActivated">Itens</h4>
+
+        <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('skills')" class="itemBackground" src="../../../assets/images/item.png">
+        <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('skills')" class="skillsIconWithItemsMenuActivated" src="../../../assets/images/Skills.png">
+        <h4 *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('skills')" class="skillsTextWithItemsMenuActivated">Skills</h4>
+
+        <!--Skills menu active-->
+        <img *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('items')" class="itemBackground"  src="../../../assets/images/item.png">
+        <img *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('items')" class="itemsIconWithSkillsMenuActivated" src="../../../assets/images/Items.png">
+        <h4 *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('items')" class="itemsTextWithSkillsMenuActivated">Itens</h4>
+
+        <img *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('skills')" class="itemBackground" src="../../../assets/images/item-selected.png">
+        <img *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('skills')" class="skillsIconWithSkillsMenuActivated" src="../../../assets/images/Skills_on.png">
+        <h4 *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('skills')" class="skillsTextWithSkillsMenuActivated">Skills</h4>
+
+        <img *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('equipment')"  class="itemBackground" src="../../../assets/images/item.png">
+        <img *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentIconWithSkillsMenuActivated" src="../../../assets/images/Equipment.png">
+        <h5 *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentTextWithSkillsMenuActivated">Equipamento</h5>
+
+        <!--Equipment menu active-->
+        <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('skills')" class="itemBackground" src="../../../assets/images/item.png">
+        <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('skills')" class="skillsIconWithEquipmentMenuActivated" src="../../../assets/images/Skills.png">
+        <h4 *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('skills')" class="skillsTextWithEquipmentMenuActivated">Skills</h4>
+
+        <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('equipment')" class="itemBackground" src="../../../assets/images/item-selected.png">
+        <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentIconWithEquipmentMenuActivated" src="../../../assets/images/Equipment_on.png">
+        <h5 *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentTextWithEquipmentMenuActivated">Equipamento</h5>
+
+        <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('items')" class="itemBackground"  src="../../../assets/images/item.png">
+        <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('items')" class="itemsIconWithEquipmentMenuActivated" src="../../../assets/images/Items.png">
+        <h4 *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('items')" class="itemsTextWithEquipmentMenuActivated">Itens</h4>
       </div>
     </div>
 
