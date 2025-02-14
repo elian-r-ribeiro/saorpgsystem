@@ -28,6 +28,14 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   isItemsMenuOpen : boolean = false;
   isSkillsMenuOpen: boolean = false;
   isEquipmentMenuOpen: boolean = false;
+  selectedItems: any[] = []; 
+  selectedSkills: any[] = []; 
+  selectedEquips: any[] = []; 
+  isSelectionVisible: boolean = false; 
+  itemsSelectionVisible: boolean = false;
+  skillsSelectionVisible: boolean = false;
+  equipsSelectionVisible: boolean = false;
+  selectedSquares: Set<string> = new Set();
   HpBarColor: string = 'success';
   indicatorTop: string = '23vh';
   indicatorLeft: string = '990px';
@@ -224,31 +232,44 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  handleMenuOpening(menu: String) {
-    if(this.isPersonIconSelected) {
-      if(menu === 'items') {
-        this.isItemsMenuOpen = !this.isItemsMenuOpen;
-        this.isSkillsMenuOpen = false;
-        this.isEquipmentMenuOpen = false;
-      } else if (menu === 'skills') {
-        this.isSkillsMenuOpen = !this.isSkillsMenuOpen;
-        this.isItemsMenuOpen = false;
-        this.isEquipmentMenuOpen = false;
-      } else if (menu === 'equipment') {
-        this.isEquipmentMenuOpen = !this.isEquipmentMenuOpen;
+  handleMenuOpening(menu: string) {
+    if (this.isPersonIconSelected) {
+        // Resetando menus antes de abrir o novo
         this.isItemsMenuOpen = false;
         this.isSkillsMenuOpen = false;
-      }
-    }
+        this.isEquipmentMenuOpen = false;
+        this.itemsSelectionVisible = false;
+        this.skillsSelectionVisible = false;
+        this.equipsSelectionVisible = false;
 
-    if(this.isItemsMenuOpen || this.isSkillsMenuOpen || this.isEquipmentMenuOpen) {
-      this.isAnyPersonIconMenuOpen = true;
-    } else {
-      this.isAnyPersonIconMenuOpen = false
+        switch (menu) {
+            case 'items':
+                this.isItemsMenuOpen = true;
+                this.itemsSelectionVisible = true;
+                const itemCount = 16;
+                this.selectedItems = Array.from({ length: itemCount }, (_, index) => ({ name: `Item ${index + 1}` }));
+                break;
+            case 'skills':
+                this.isSkillsMenuOpen = true;
+                this.skillsSelectionVisible = true;
+                this.selectedSkills = [
+                    { "name": "Skill 1" }, { "name": "Skill 2" }, { "name": "Skill 3" }, { "name": "Skill 4" },
+                    { "name": "Skill 5" }, { "name": "Skill 6" }, { "name": "Skill 7" }, { "name": "Skill 8" }
+                ];
+                break;
+            case 'equipment':
+                this.isEquipmentMenuOpen = true;
+                this.equipsSelectionVisible = true;
+                this.selectedEquips = [
+                    { "name": "Equip 1" }, { "name": "Equip 2" }, { "name": "Equip 3" }, { "name": "Equip 4" },
+                    { "name": "Equip 5" }, { "name": "Equip 6" }, { "name": "Equip 7" }, { "name": "Equip 8" }
+                ];
+                break;
+        }
     }
-
+    this.isAnyPersonIconMenuOpen = this.isItemsMenuOpen || this.isSkillsMenuOpen || this.isEquipmentMenuOpen;
     this.handleIndicatorLeft();
-  }
+}
 
   handleIndicatorLeft() {
     if(this.isAnyPersonIconMenuOpen) {
@@ -257,6 +278,17 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       this.indicatorLeft = '990px';
     }
   }
+
+  selectItem(item: any) {
+    const itemName = item.name;
+    if (this.selectedSquares.has(itemName)) {
+      this.selectedSquares.delete(itemName);
+    } else {
+      this.selectedSquares.clear();
+      this.selectedSquares.add(itemName);
+    }
+  }
+
 
   handleIconChange() {
     if(this.isPersonIconSelected == true && this.personIcon === 'Man.png') {

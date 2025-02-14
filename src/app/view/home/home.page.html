@@ -48,10 +48,21 @@
         <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('items')" class="itemBackground" src="../../../assets/images/item-selected.png">
         <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('items')" class="itemsIconWithItemsMenuActivated" src="../../../assets/images/Items_on.png">
         <h4 *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('items')" class="itemsTextWithItemsMenuActivated">Itens</h4>
+      
 
         <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('skills')" class="itemBackground" src="../../../assets/images/item.png">
         <img *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('skills')" class="skillsIconWithItemsMenuActivated" src="../../../assets/images/Skills.png">
         <h4 *ngIf="isItemsMenuOpen" (click)="handleMenuOpening('skills')" class="skillsTextWithItemsMenuActivated">Skills</h4>
+
+
+        <div class="selection-container" *ngIf="isItemsMenuOpen">
+          <div class="selection-grid">
+            <div class="selection-square" *ngFor="let item of selectedItems" (click)="selectItem(item)" [ngClass]="{'selected': selectedSquares.has(item.name)}">
+              {{ item.name }}
+            </div>
+          </div>
+        </div>
+
 
         <!--Skills menu active-->
         <img *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('items')" class="itemBackground"  src="../../../assets/images/item.png">
@@ -66,6 +77,16 @@
         <img *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentIconWithSkillsMenuActivated" src="../../../assets/images/Equipment.png">
         <h5 *ngIf="isSkillsMenuOpen" (click)="handleMenuOpening('equipment')" class="equipmentTextWithSkillsMenuActivated">Equipamento</h5>
 
+
+        <div class="selection-container" *ngIf="isSkillsMenuOpen">
+          <div class="selection-grid">
+            <div class="selection-square" *ngFor="let skill of selectedSkills" (click)="selectItem(skill)" [ngClass]="{'selected': selectedSquares.has(skill.name)}">
+              {{ skill.name }}
+            </div>
+          </div>
+        </div>
+
+
         <!--Equipment menu active-->
         <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('skills')" class="itemBackground" src="../../../assets/images/item.png">
         <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('skills')" class="skillsIconWithEquipmentMenuActivated" src="../../../assets/images/Skills.png">
@@ -78,8 +99,14 @@
         <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('items')" class="itemBackground"  src="../../../assets/images/item.png">
         <img *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('items')" class="itemsIconWithEquipmentMenuActivated" src="../../../assets/images/Items.png">
         <h4 *ngIf="isEquipmentMenuOpen" (click)="handleMenuOpening('items')" class="itemsTextWithEquipmentMenuActivated">Itens</h4>
-      </div>
-    </div>
 
-  </ng-template>
-</ion-content>
+
+        <div class="selection-container" *ngIf="isEquipmentMenuOpen">
+          <div class="selection-grid">
+            <div class="selection-square" *ngFor="let equip of selectedEquips" (click)="selectItem(equip)" [ngClass]="{'selected': selectedSquares.has(equip.name)}">
+              {{ equip.name }}
+            </div>
+          </div>
+        </div>
+</div>
+
