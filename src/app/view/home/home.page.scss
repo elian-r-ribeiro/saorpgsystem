@@ -306,4 +306,16 @@ ion-progress-bar {
   .selection-square.selected {
     background-color: orange;
   }
+
+  .useButton {
+    cursor: pointer;
+    position: absolute;
+    margin-left: 200px;
+  }
+
+  .resetButton {
+    cursor: pointer;
+    position: absolute;
+    margin-left: 300px;
+  }
 }

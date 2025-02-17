@@ -57,10 +57,15 @@
 
         <div class="selection-container" *ngIf="isItemsMenuOpen">
           <div class="selection-grid">
-            <div class="selection-square" *ngFor="let item of selectedItems" (click)="selectItem(item)" [ngClass]="{'selected': selectedSquares.has(item.name)}">
-              {{ item.name }}
+            <div class="selection-square" *ngFor="let item of itemsFromLoggedUserInventoryFromFirebase; let i = index" (click)="selectItem(item, i)" [ngClass]="{'selected': selectedSquares.has(item.name)}">
+              {{ item.name }} x{{ item.amount }}
             </div>
           </div>
+        </div>
+
+        <div *ngIf="isAnyItemSelected">
+          <ion-button (click)="useItem()" class="useButton">Usar</ion-button>
+          <ion-button (click)="resetItems()" class="resetButton">Resetar</ion-button>
         </div>
 
 
@@ -80,7 +85,7 @@
 
         <div class="selection-container" *ngIf="isSkillsMenuOpen">
           <div class="selection-grid">
-            <div class="selection-square" *ngFor="let skill of selectedSkills" (click)="selectItem(skill)" [ngClass]="{'selected': selectedSquares.has(skill.name)}">
+            <div class="selection-square" *ngFor="let skill of selectedSkills; let i = index" (click)="selectItem(skill , i)" [ngClass]="{'selected': selectedSquares.has(skill.name)}">
               {{ skill.name }}
             </div>
           </div>
@@ -103,7 +108,7 @@
 
         <div class="selection-container" *ngIf="isEquipmentMenuOpen">
           <div class="selection-grid">
-            <div class="selection-square" *ngFor="let equip of selectedEquips" (click)="selectItem(equip)" [ngClass]="{'selected': selectedSquares.has(equip.name)}">
+            <div class="selection-square" *ngFor="let equip of selectedEquips; let i = index" (click)="selectItem(equip, i)" [ngClass]="{'selected': selectedSquares.has(equip.name)}">
               {{ equip.name }}
             </div>
           </div>

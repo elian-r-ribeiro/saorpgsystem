@@ -13,9 +13,14 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('videoPlayer', { static: false }) videoPlayer!: ElementRef<HTMLVideoElement>;
   loggedUserInfoFromLocalStorage = this.authService.getUserLogged();
   loggedUserInfoFromFirebase : any;
+  loggedUserInventoryFromFirebase : any;
+  itemsFromLoggedUserInventoryFromFirebase : any;
   maxHP!: number;
   currentHP!: number;
   allSubscriptions?: Subscription[];
+  selectedItemIndex : number | null = null;
+
+  //Front variables
   showVideo: boolean = false;
   isPlaying: boolean = false;
   isPersonIconSelected: boolean = false;
@@ -28,13 +33,14 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   isItemsMenuOpen : boolean = false;
   isSkillsMenuOpen: boolean = false;
   isEquipmentMenuOpen: boolean = false;
-  selectedItems: any[] = []; 
-  selectedSkills: any[] = []; 
-  selectedEquips: any[] = []; 
-  isSelectionVisible: boolean = false; 
+  isSelectionVisible: boolean = false;
+  isAnyItemSelected: boolean = true;
   itemsSelectionVisible: boolean = false;
   skillsSelectionVisible: boolean = false;
   equipsSelectionVisible: boolean = false;
+  selectedItems: any[] = []; 
+  selectedSkills: any[] = []; 
+  selectedEquips: any[] = []; 
   selectedSquares: Set<string> = new Set();
   HpBarColor: string = 'success';
   indicatorTop: string = '23vh';
@@ -53,7 +59,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.checkWatchedStatus();
-    this.setLoggedUserInfo();
+    this.setLoggedUserInfoAndInventory();
     this.setHpColor();
   }
 
@@ -140,6 +146,22 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  async setLoggedUserInfoAndInventory() {
+    const loggedUserUid = this.loggedUserInfoFromLocalStorage.uid;
+    const userSubscription = this.firebaseService.getSomethingFromFirebaseWithCondition('uid', loggedUserUid, 'users').subscribe(res => {
+      this.loggedUserInfoFromFirebase = res.map(user => {return{id : user.payload.doc.id, ...user.payload.doc.data() as any} as any});
+      this.maxHP = this.loggedUserInfoFromFirebase[0].playerMaxHp;
+      this.currentHP = this.loggedUserInfoFromFirebase[0].playerCurrentHp;
+      this.setHpColor();
+      const inventorySubscription = this.firebaseService.getSomethingFromFirebaseWithCondition('uid', loggedUserUid, 'inventorys').subscribe(res => {
+        const loggedUserInventoryFromFirebaseTemp = res.map(inventory => {return{id : inventory.payload.doc.id, ...inventory.payload.doc.data() as any} as any});
+        this.itemsFromLoggedUserInventoryFromFirebase = loggedUserInventoryFromFirebaseTemp[0].items;
+      });
+      this.allSubscriptions?.push(inventorySubscription);
+    });
+    this.allSubscriptions?.push(userSubscription);
+  }
+
   handlePlayerLevelAndXp() {
     if(this.loggedUserInfoFromFirebase[0].playerCurrentXp >= this.loggedUserInfoFromFirebase[0].requiredXpToNextLevel){
       this.firebaseService.updatePlayerLevelAndHp(
@@ -150,18 +172,98 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  async setLoggedUserInfo() {
-    const loggedUserUid = this.loggedUserInfoFromLocalStorage.uid;
-    const userSubscription = this.firebaseService.getSomethingFromFirebaseWithCondition('uid', loggedUserUid, 'users').subscribe(res => {
-      this.loggedUserInfoFromFirebase = res.map(user => {return{id : user.payload.doc.id, ...user.payload.doc.data() as any} as any});
-      this.maxHP = this.loggedUserInfoFromFirebase[0].playerMaxHp;
-      this.currentHP = this.loggedUserInfoFromFirebase[0].playerCurrentHp;
-      this.setHpColor();
-    });
-    this.allSubscriptions?.push(userSubscription);
+  goToProfilePage(){}
+
+  closeAllMenusOnIconClose(icon: string, isIconOpening: boolean) {
+    if(!isIconOpening){
+      this.isAnyPersonIconMenuOpen = false;
+      if(icon === 'person') {
+        this.isItemsMenuOpen = false;
+        this.isSkillsMenuOpen = false;
+        this.isEquipmentMenuOpen = false;
+      }
+    }
   }
 
-  goToProfilePage(){}
+  handleMenuOpening(menu: string) {
+    if (this.isPersonIconSelected) {
+        // Resetando menus antes de abrir o novo
+        this.isItemsMenuOpen = false;
+        this.isSkillsMenuOpen = false;
+        this.isEquipmentMenuOpen = false;
+        this.itemsSelectionVisible = false;
+        this.skillsSelectionVisible = false;
+        this.equipsSelectionVisible = false;
+
+        switch (menu) {
+            case 'items':
+                this.isItemsMenuOpen = true;
+                this.itemsSelectionVisible = true;
+                const itemCount = 16;
+                this.selectedItems = [
+                  { "name": "Poção de cura pequena", "id": "healpotsmall" }, { "name": "Item 2" }, { "name": "Item 3" }, { "name": "Item 4" },
+                  { "name": "Item 5" }, { "name": "Item 6" }, { "name": "Item 7" }, { "name": "Item 8" }
+              ];
+                break;
+            case 'skills':
+                this.isSkillsMenuOpen = true;
+                this.skillsSelectionVisible = true;
+                this.selectedSkills = [
+                    { "name": "Skill 1", }, { "name": "Skill 2" }, { "name": "Skill 3" }, { "name": "Skill 4" },
+                    { "name": "Skill 5" }, { "name": "Skill 6" }, { "name": "Skill 7" }, { "name": "Skill 8" }
+                ];
+                break;
+            case 'equipment':
+                this.isEquipmentMenuOpen = true;
+                this.equipsSelectionVisible = true;
+                this.selectedEquips = [
+                    { "name": "Equip 1" }, { "name": "Equip 2" }, { "name": "Equip 3" }, { "name": "Equip 4" },
+                    { "name": "Equip 5" }, { "name": "Equip 6" }, { "name": "Equip 7" }, { "name": "Equip 8" }
+                ];
+                break;
+        }
+    }
+    this.isAnyPersonIconMenuOpen = this.isItemsMenuOpen || this.isSkillsMenuOpen || this.isEquipmentMenuOpen;
+    this.handleIndicatorLeft();
+}
+
+
+
+  selectItem(item: any, index: number) {
+    const itemName = item.name;
+    this.selectedItemIndex = index;
+    console.log(this.selectedItemIndex)
+    if (this.selectedSquares.has(itemName)) {
+      this.selectedSquares.delete(itemName);
+    } else {
+      this.selectedSquares.clear();
+      this.selectedSquares.add(itemName);
+    }
+  }
+
+  useItem() {
+    const itemId = this.itemsFromLoggedUserInventoryFromFirebase[this.selectedItemIndex!].id;
+    const currentAmount = this.itemsFromLoggedUserInventoryFromFirebase[this.selectedItemIndex!].amount;
+    const newAmount = currentAmount - 1;
+    if(itemId === 'healpotsmall'){
+      const newHP = this.currentHP += 50;
+      this.setHpColor();
+      this.firebaseService.updatePlayerHP(newHP, this.loggedUserInfoFromFirebase[0].id);
+    }
+    this.firebaseService.updateItemAmount(this.loggedUserInfoFromLocalStorage.uid, this.selectedItemIndex!, newAmount);
+  }
+
+  resetItems(){
+    this.authService.resetItemsForTests(this.loggedUserInfoFromLocalStorage.uid);
+  }
+
+  handleIndicatorLeft() {
+    if(this.isAnyPersonIconMenuOpen) {
+      this.indicatorLeft = '1220px';
+    } else {
+      this.indicatorLeft = '990px';
+    }
+  }
 
   handleIconsActivation(icon: String) {
     if(icon === 'person') {
@@ -220,75 +322,6 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       this.isAnyIconSelected = false
     }
   }
-
-  closeAllMenusOnIconClose(icon: string, isIconOpening: boolean) {
-    if(!isIconOpening){
-      this.isAnyPersonIconMenuOpen = false;
-      if(icon === 'person') {
-        this.isItemsMenuOpen = false;
-        this.isSkillsMenuOpen = false;
-        this.isEquipmentMenuOpen = false;
-      }
-    }
-  }
-
-  handleMenuOpening(menu: string) {
-    if (this.isPersonIconSelected) {
-        // Resetando menus antes de abrir o novo
-        this.isItemsMenuOpen = false;
-        this.isSkillsMenuOpen = false;
-        this.isEquipmentMenuOpen = false;
-        this.itemsSelectionVisible = false;
-        this.skillsSelectionVisible = false;
-        this.equipsSelectionVisible = false;
-
-        switch (menu) {
-            case 'items':
-                this.isItemsMenuOpen = true;
-                this.itemsSelectionVisible = true;
-                const itemCount = 16;
-                this.selectedItems = Array.from({ length: itemCount }, (_, index) => ({ name: `Item ${index + 1}` }));
-                break;
-            case 'skills':
-                this.isSkillsMenuOpen = true;
-                this.skillsSelectionVisible = true;
-                this.selectedSkills = [
-                    { "name": "Skill 1" }, { "name": "Skill 2" }, { "name": "Skill 3" }, { "name": "Skill 4" },
-                    { "name": "Skill 5" }, { "name": "Skill 6" }, { "name": "Skill 7" }, { "name": "Skill 8" }
-                ];
-                break;
-            case 'equipment':
-                this.isEquipmentMenuOpen = true;
-                this.equipsSelectionVisible = true;
-                this.selectedEquips = [
-                    { "name": "Equip 1" }, { "name": "Equip 2" }, { "name": "Equip 3" }, { "name": "Equip 4" },
-                    { "name": "Equip 5" }, { "name": "Equip 6" }, { "name": "Equip 7" }, { "name": "Equip 8" }
-                ];
-                break;
-        }
-    }
-    this.isAnyPersonIconMenuOpen = this.isItemsMenuOpen || this.isSkillsMenuOpen || this.isEquipmentMenuOpen;
-    this.handleIndicatorLeft();
-}
-
-  handleIndicatorLeft() {
-    if(this.isAnyPersonIconMenuOpen) {
-      this.indicatorLeft = '1220px';
-    } else {
-      this.indicatorLeft = '990px';
-    }
-  }
-
-  selectItem(item: any) {
-    const itemName = item.name;
-    if (this.selectedSquares.has(itemName)) {
-      this.selectedSquares.delete(itemName);
-    } else {
-      this.selectedSquares.clear();
-      this.selectedSquares.add(itemName);
-    }
-  }
-
 
   handleIconChange() {
     if(this.isPersonIconSelected == true && this.personIcon === 'Man.png') {

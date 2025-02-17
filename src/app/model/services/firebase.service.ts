@@ -43,6 +43,24 @@ export class FirebaseService {
       playerCurrentLevel: newLevel, playerCurrentXp: 0, playerMaxHp: newHp });
   }
 
+  updatePlayerHP(newHp: number, userDocumentId: string) {
+    return this.firestore.collection('users').doc(userDocumentId).update({ playerCurrentHp: newHp });
+  }
+
+  updateItemAmount(uid: string, itemIndex: number, newAmount: number) {
+    const itemsSubscription = this.getSomethingFromFirebaseWithCondition('uid', uid, 'inventorys').subscribe(async res => {{
+      const loggedUserInventoryFromFirebaseTemp = res.map(inventory => {return{id : inventory.payload.doc.id, ...inventory.payload.doc.data() as any} as any});
+      const loggedUserInventoryFromFirebase = loggedUserInventoryFromFirebaseTemp[0];
+      loggedUserInventoryFromFirebase.items[itemIndex].amount = newAmount;
+      console.log(loggedUserInventoryFromFirebase.items[itemIndex].amount);
+      if(newAmount <= 0) {
+        loggedUserInventoryFromFirebase.items.splice(itemIndex, 1);
+      }
+      itemsSubscription.unsubscribe();
+      return this.firestore.collection('inventorys').doc(loggedUserInventoryFromFirebase.id).update({ items: loggedUserInventoryFromFirebase.items });
+    }})
+  }
+
   getSomethingFromFirebase(path: string) {
     return this.firestore.collection(path).snapshotChanges();
   }
